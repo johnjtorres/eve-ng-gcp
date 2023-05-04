@@ -1,0 +1,57 @@
+---
+- name: Install eve-ng community edition
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Wait for vm to be available
+      wait_for_connection:
+
+    - name: Wait for /var/lib/dpkg/lock-frontend to be released
+      shell: while lsof /var/lib/dpkg/lock-frontend ; do sleep 10; done;
+
+    - name: Add eve-ng apt key
+      apt_key:
+        url: http://www.eve-ng.net/focal/eczema@ecze.com.gpg.key
+        state: present
+
+    - name: Add eve-ng repo
+      apt_repository:
+        repo: deb [arch=amd64] http://www.eve-ng.net/focal focal main
+        state: present
+
+    - name: Install required packages
+      apt:
+        force_apt_get: true
+        update_cache: true
+        package:
+          - software-properties-common
+          - eve-ng
+
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+
+    - name: Execute gcp_tune.sh
+      script: ./gcp_tune.sh
+
+    - name: Update all packages
+      apt:
+        update_cache: true
+        upgrade: true
+
+    - name: Reboot eve-ng
+      reboot:
+
+    - name: Wait for vm to be available
+      wait_for_connection:
+
+    - name: Retrieve images
+      shell:
+        cmd: gsutil -m cp -r gs://eve-ng-bucket/images/* /opt/unetlab/addons/qemu/
+
+    - name: Fix permissions
+      shell:
+        cmd: /opt/unetlab/wrappers/unl_wrapper -a fixpermissions

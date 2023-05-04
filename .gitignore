@@ -1,0 +1,14 @@
+# Terraform
+.terraform/
+*.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+
+# Personal config files
+default.auto.tfvars
+
+# Inventory is created automatically after vm is deployed
+inventory
+
+# Python
+venv/

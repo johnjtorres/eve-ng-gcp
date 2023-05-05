@@ -10,9 +10,9 @@
 
 ## Why
 
-I am a heavy user of EVE-NG for my professional studies, and I wanted a way to have a lab in the cloud at minimal cost. I have deployed EVE-NG instances in Google Cloud in the past, but even with the instance completely turned off, there are still charges to maintain the boot disk and the custom EVE-NG image. This meant I was paying over $10/month to not use something. By using Terraform, I am able only pay for what I use and nothing more. I could save an additional few dollars by uploading the lab images directly from my local machine instead of keeping them in a bucket, but since my internet is not the fastest, I think the time saved is worth it.
+I am a heavy user of EVE-NG for my professional studies, and I wanted a way to have a lab in the cloud at minimal cost. I have deployed EVE-NG instances in Google Cloud in the past, but even with the instance completely turned off, there are still charges to maintain the boot disk and the custom EVE-NG image. This meant I was paying over $10/month to not use something. By using Terraform, I only paying for what I use and nothing more. I could save an additional few dollars by uploading the lab images directly from my local machine instead of keeping them in a bucket, but since my internet is not the fastest, I think the time saved is worth it.
 
-My second reason is for professional development. I find that the best way to learn a technology is to use it to solve a problem, and this project has certainly taught me a lot about Terraform, Ansible, IaC, and cloud technologies.
+My second reason is for professional development. I find that the best way to learn a technology is to use it to solve a problem, and this project has taught me a lot about Terraform, Ansible, IaC, and cloud technologies.
 
 ## Install
 

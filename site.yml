@@ -48,6 +48,13 @@
     - name: Wait for vm to be available
       wait_for_connection:
 
+    - name: Disable initial configuration wizard
+      file:
+        path: /opt/ovf/.configured
+        state: touch
+        modification_time: preserve
+        access_time: preserve
+
     - name: Retrieve images
       shell:
         cmd: gsutil -m cp -r gs://eve-ng-bucket/images/* /opt/unetlab/addons/qemu/

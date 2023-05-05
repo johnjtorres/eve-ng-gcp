@@ -32,6 +32,8 @@ resource "google_compute_instance" "eve-ng_instance" {
     email  = var.service_account
     scopes = ["cloud-platform"]
   }
+
+  metadata_startup_script = data.template_file.default.rendered
 }
 
 data "google_compute_image" "eve-ng_image" {
@@ -69,6 +71,11 @@ resource "google_compute_firewall" "firewall_allow_egress" {
   }
 }
 
-output "ip" {
-  value = google_compute_instance.eve-ng_instance.network_interface.0.access_config.0.nat_ip
+data "template_file" "default" {
+  template = file("${path.module}/ddns.sh")
+  vars = {
+    ddns_hostname = var.ddns_hostname
+    ddns_username = var.ddns_username
+    ddns_password = var.ddns_password
+  }
 }

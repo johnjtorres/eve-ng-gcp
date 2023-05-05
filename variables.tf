@@ -51,3 +51,18 @@ variable "service_account" {
   description = "Service account email"
   type        = string
 }
+
+variable "ddns_hostname" {
+  description = "Hostname for No-IP DDNS"
+  type        = string
+}
+
+variable "ddns_username" {
+  description = "Username for No-IP DDNS"
+  type        = string
+}
+
+variable "ddns_password" {
+  description = "Password for No-IP DDNS"
+  type        = string
+}

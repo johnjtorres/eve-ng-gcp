@@ -28,14 +28,18 @@
         package:
           - software-properties-common
           - eve-ng
+          - python3-pymysql
+      register: eve_pkg
 
     - name: Restart MySQL
       service:
         name: mysql
         state: restarted
+      when: eve_pkg.changed
 
     - name: Execute gcp_tune.sh
       script: ./gcp_tune.sh
+      when: eve_pkg.changed
 
     - name: Update all packages
       apt:
@@ -44,6 +48,7 @@
 
     - name: Reboot eve-ng
       reboot:
+      when: eve_pkg.changed
 
     - name: Wait for vm to be available
       wait_for_connection:

@@ -32,3 +32,5 @@ inventory
 
 # Python
 venv/
+
+group_vars/

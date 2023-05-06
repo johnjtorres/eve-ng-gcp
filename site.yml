@@ -50,8 +50,14 @@
       reboot:
       when: eve_pkg.changed
 
-    - name: Wait for vm to be available
-      wait_for_connection:
+    - name: Change admin GUI password
+      community.mysql.mysql_query:
+        login_db: eve_ng_db
+        login_user: "{{ mysql_user }}"
+        login_password: "{{ mysql_password }}"
+        query: UPDATE users SET password = %(password)s WHERE username = 'admin';
+        named_args:
+          password: "{{ eve_password }}"
 
     - name: Disable initial configuration wizard
       file:

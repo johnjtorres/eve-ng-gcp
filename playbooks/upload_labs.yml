@@ -1,5 +1,5 @@
 ---
-- name: Upload labs to EVE-NG
+- name: Upload lab schema files from local machine
   hosts: all
   gather_facts: false
   become: true

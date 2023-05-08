@@ -6,7 +6,7 @@
 
   tasks:
     - name: Backup
-      ansible.posix.synchronize:
+      synchronize:
         mode: pull
         src: /opt/unetlab/labs/
         dest: "{{ lab_directory_local }}"

@@ -1,0 +1,14 @@
+---
+- name: Import lab images and fix permissions
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Import images
+      shell:
+        cmd: gsutil -m cp -r gs://eve-ng-bucket/images/* /opt/unetlab/addons/qemu/
+
+    - name: Fix permissions
+      shell:
+        cmd: /opt/unetlab/wrappers/unl_wrapper -a fixpermissions

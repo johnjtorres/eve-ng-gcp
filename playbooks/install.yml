@@ -1,0 +1,45 @@
+---
+- name: Install EV-NG Community Edition
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Add eve-ng apt key
+      apt_key:
+        url: http://www.eve-ng.net/focal/eczema@ecze.com.gpg.key
+        state: present
+
+    - name: Add eve-ng repo
+      apt_repository:
+        repo: deb [arch=amd64] http://www.eve-ng.net/focal focal main
+        state: present
+
+    - name: Install required packages
+      apt:
+        force_apt_get: true
+        update_cache: true
+        package:
+          - software-properties-common
+          - eve-ng
+          - python3-pymysql
+      register: eve_pkg
+
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+      when: eve_pkg.changed
+
+    - name: Execute gcp_tune.sh
+      script: ../scripts/gcp_tune.sh
+      when: eve_pkg.changed
+
+    - name: Update all packages
+      apt:
+        update_cache: true
+        upgrade: true
+
+    - name: Reboot eve-ng
+      reboot:
+      when: eve_pkg.changed

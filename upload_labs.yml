@@ -1,0 +1,14 @@
+---
+- name: Upload labs to EVE-NG
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Upload
+      synchronize:
+        mode: push
+        src: "{{ lab_directory_local }}"
+        dest: /opt/unetlab/labs/
+        rsync_opts:
+          - "--chown=www-data:www-data"

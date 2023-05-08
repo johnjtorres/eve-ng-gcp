@@ -72,7 +72,7 @@ resource "google_compute_firewall" "firewall_allow_egress" {
 }
 
 data "template_file" "default" {
-  template = file("${path.module}/ddns.sh")
+  template = file("${path.module}/scripts/ddns.sh")
   vars = {
     ddns_hostname = var.ddns_hostname
     ddns_username = var.ddns_username

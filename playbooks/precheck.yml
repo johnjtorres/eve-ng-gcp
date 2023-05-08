@@ -1,5 +1,5 @@
 ---
-- name: Verify VM is ready for installation
+- name: Perform installation pre-checks
   hosts: all
   become: true
   gather_facts: false

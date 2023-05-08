@@ -1,0 +1,12 @@
+---
+- name: Backup EVE-NG labs to local machine
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Backup
+      ansible.posix.synchronize:
+        mode: pull
+        src: /opt/unetlab/labs/
+        dest: "{{ lab_directory_local }}"

@@ -31,15 +31,7 @@
         state: restarted
       when: eve_pkg.changed
 
-    - name: Execute gcp_tune.sh
-      script: ../scripts/gcp_tune.sh
-      when: eve_pkg.changed
-
     - name: Update all packages
       apt:
         update_cache: true
         upgrade: true
-
-    - name: Reboot eve-ng
-      reboot:
-      when: eve_pkg.changed

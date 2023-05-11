@@ -1,0 +1,71 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+iface eth0 inet manual
+auto pnet0
+iface pnet0 inet dhcp
+    pre-up ip link set dev eth0 up
+    bridge_ports eth0
+    bridge_stp off
+
+# Cloud devices
+iface eth1 inet manual
+auto pnet1
+iface pnet1 inet static
+    bridge_ports eth1
+    bridge_stp off
+    address 10.199.199.1
+    netmask 255.255.255.0
+
+iface eth2 inet manual
+auto pnet2
+iface pnet2 inet manual
+    bridge_ports eth2
+    bridge_stp off
+
+iface eth3 inet manual
+auto pnet3
+iface pnet3 inet manual
+    bridge_ports eth3
+    bridge_stp off
+
+iface eth4 inet manual
+auto pnet4
+iface pnet4 inet manual
+    bridge_ports eth4
+    bridge_stp off
+
+iface eth5 inet manual
+auto pnet5
+iface pnet5 inet manual
+    bridge_ports eth5
+    bridge_stp off
+
+iface eth6 inet manual
+auto pnet6
+iface pnet6 inet manual
+    bridge_ports eth6
+    bridge_stp off
+
+iface eth7 inet manual
+auto pnet7
+iface pnet7 inet manual
+    bridge_ports eth7
+    bridge_stp off
+
+iface eth8 inet manual
+auto pnet8
+iface pnet8 inet manual
+    bridge_ports eth8
+    bridge_stp off
+
+iface eth9 inet manual
+auto pnet9
+iface pnet9 inet manual
+    bridge_ports eth9
+    bridge_stp off

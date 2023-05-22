@@ -13,3 +13,6 @@
 
 - name: Upload lab schema files from local machine
   import_playbook: upload_labs.yml
+
+- name: Install ZeroTier and join network
+  import_playbook: zerotier.yml

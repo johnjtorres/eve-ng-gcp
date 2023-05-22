@@ -1,0 +1,74 @@
+---
+- name: Install and configure ZeroTier VPN
+  become: true
+  gather_facts: false
+  hosts: all
+
+  tasks:
+    - name: Add ZeroTier GPG key
+      apt_key:
+        url: https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg
+        state: present
+
+    - name: Add ZeroTier repo
+      apt_repository:
+        repo: deb https://download.zerotier.com/debian/focal focal main
+        state: present
+        filename: zerotier
+
+    - name: Install ZeroTier
+      package:
+        name: zerotier-one
+        state: present
+        update_cache: yes
+      register: zerotier_client
+
+    - name: Start ZeroTier
+      service:
+        name: zerotier-one
+        state: started
+      when:
+        - zerotier_client is succeeded
+
+    - name: Update ansible_local facts
+      script: ../scripts/set_facts.sh
+
+    - name: Re-gather ansible_local facts
+      setup: filter=ansible_local
+
+    - name: Authorize new members to network
+      uri:
+        url: "{{ zerotier_api_url }}/network/{{ zerotier_network_id }}/member/{{ ansible_local['zerotier']['node_id'] }}"
+        method: POST
+        headers:
+          Authorization: token {{ zerotier_api_token }}
+        body:
+          hidden: false
+          config:
+            authorized: true
+        body_format: json
+      register: auth_apiresult
+      delegate_to: "{{ inventory_hostname }}"
+      when:
+        - ansible_local['zerotier']['networks'][zerotier_network_id] is not defined or
+          ansible_local['zerotier']['networks'][zerotier_network_id]['status'] != 'OK'
+
+    - name: Configure members in network
+      uri:
+        url: "{{ zerotier_api_url }}/network/{{ zerotier_network_id }}/member/{{ ansible_local['zerotier']['node_id'] }}"
+        method: POST
+        headers:
+          Authorization: token {{ zerotier_api_token }}
+        body:
+          name: eve-ng
+          description: "{{ zerotier_member_description | default() }}"
+          config:
+            ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
+        body_format: json
+      register: conf_apiresult
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Join ZeroTier network
+      command: zerotier-cli join {{ zerotier_network_id }}
+      args:
+        creates: /var/lib/zerotier-one/networks.d/{{ zerotier_network_id }}.conf
